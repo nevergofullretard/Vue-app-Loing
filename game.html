@@ -1,26 +1,175 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Vue.js Testing Site</title>
+  <title>Loing</title>
 
   <!-- development version, includes helpful console warnings -->
   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.20/lodash.min.js"></script>
 </head>
 <body>
   <div id="app">
-    <h1>{{ person.height }}</h1>
-    <h1>{{ sayHi('Morgen') }}</h1>
+    <h1>Loing</h1>
     <a :href="website">Home</a>
-
     <p v-html="atag"></p>
-    <input type="text" :value="person.name">
 
-    <p>{{wert}}</p>
 
-    <button v-on:click="add">+</button>
-    <button v-on:click="subtract">-</button>
+
+  <div id="start-screen" v-show="!game_started">
+
+        <input type="text" v-model="player.name" :placeholder="'Spieler '+ add_player_number">
+          <button type="submit" v-on:click="add_player">+</button>
+
+      <ol>
+        <li v-for="player in players">
+          {{ player.name }}
+          
+        </li>
+      </ol>
+
+      <br>
+
+        <select v-model="lives">
+        <option disabled value="">Leben</option>
+        <option v-for="option in options" v-bind:value="option.value">
+          {{ option.text }}
+        </option>
+        
+      </select>
+
+      <span>Selected: {{ lives }}</span>
+      <br>
+
+      <input type="checkbox"  v-model="schwimmen">
+      <label for="checkbox">Mit Schwimmen: {{ schwimmen }}</label>
+
+      <br>
+      <button v-on:click="start">START</button>
+
+   </div> 
+
+   <div v-if="game_started">
+
+    <div v-if="!finished">
+      
+            <p>{{players[current_player].name}} ist dran!</p>
+
+           <div v-if="!dices_rolled">
+             
+
+             <div v-if="!first">
+
+              <div v-if="!showed_button">
+                <button v-on:click="roll">WÜRFELN</button>
+                <button v-on:click="show" >Aufdecken</button>
+              </div>
+              
+                
+              
+               
+
+               <div v-if="showed">
+
+                <ul>
+                <li>{{dices[0]}}</li>
+                <li>{{dices[1]}}</li>
+              </ul>
+              <br>
+
+                 <button v-on:click="lie" >Gelogen</button>
+                 <button v-on:click="truth" >Wahrheit</button>
+               </div>
+
+             </div>
+             <div v-else>
+               <button v-on:click="roll">WÜRFELN</button>
+             </div>
+           </div>
+
+           <div v-if="dices_rolled">
+
+               <ul>
+                <li>{{dices[0]}}</li>
+                <li>{{dices[1]}}</li>
+              </ul>
+              <br>
+
+
+                <div v-if="!rolled_again">
+                  <button v-on:click="open_close" >Reinschauen/Schließen</button>
+                  <button v-on:click="next_player" >Weiter geben</button>
+
+                  <div v-if="!first">
+                   <button v-on:click="roll_again">Nochmal würfeln & Einstellen</button>
+                   </div>
+                </div>
+                 
+
+
+                 <div v-if="rolled_again">
+                   <button v-on:click="next_player" >Weiter geben</button>
+                 </div>
+
+              
+            
+              
+
+     </div>
+        
+          
+         
+            <div v-if="schwimmen">
+              
+              <p v-for="(player, index) in sortArrays(players)"> 
+                
+              <span>{{index + 1}}.</span>
+              <span>{{ player.name }}</span>
+              <span v-if="player.lives === 1">schwimmt</span>
+              <span v-if="player.lives < 1">-</span>
+              <span v-if="player.lives > 1">{{player.lives - 1}} Leben</span>
+
+              </p>
+              
+
+              
+
+            </div>
+
+          <div v-else>
+            
+            <p v-for="(player, index) in sortArrays(players)" >
+                  <span>{{index + 1}}.</span>
+                  <span>{{ player.name }}</span>
+                  <span v-if="player.lives >= 1">{{ player.lives }} Leben</span>
+                  <span v-if="player.lives < 1">-</span>
+                </p>
+
+          </div>
+
+         
+          
+         
+            
+
+
+            
+
+
+    </div>
+
+     
+     <div v-if="finished">
+        <button v-on:click="repeat">Revange!</button>
+        <a href="/">Neue Runde mit neuen Spielern</a>
+        <small>In die andere Richtung</small>
+      </div>
+
+   
+
+   </div>
+   
 
 
   </div>
