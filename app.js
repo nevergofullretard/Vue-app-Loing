@@ -29,6 +29,14 @@ new Vue({
 
     schwimmen: true,
 
+
+    animation: "",
+    next_player_animation: "",
+    show_animation: "",
+    lie_truth_animation: "",
+    info: "",
+    info_animation: "",
+
     
 
     game_started:false,
@@ -40,7 +48,7 @@ new Vue({
     finished: false,
 
 
-    dices: [],
+    dices: [0,0],
 
     website: 'https://loing.technikmax.com',
     atag:'<a href="website">Home</a>'
@@ -94,16 +102,33 @@ new Vue({
 			this.dices[1] = dice_one;
 		}
 
+
+		this.next_player_animation = "";
+
+//        setTimeout(() => {
+//         this.dices_rolled = true;
+//         }, 1000);
+
+		this.animation = "animation: shakeY; animation-duration: 1.7s;";
 		this.dices_rolled = true;
-		
 	},
 
 
 	open_close: function() {
 		//change css class of Jägermeister bottle to move up/down
+
+		    this.animation = "animation: slideOutUp; animation-duration: 1.9s;";
+		    setTimeout(() => {
+             this.animation = "animation: slideInDown; animation-duration: 2.4s;"
+             }, 1800);
+
+
+
 	},
 
 	next_player: function() {
+
+
 		var available_players = []
 		this.players.forEach((value, index) => {
 			    if (value.lives > 0) {
@@ -133,18 +158,30 @@ new Vue({
 		this.rolled_again = false;
 		this.showed = false;
 		this.showed_button = false;
+        this.animation = " ";
+        this.show_animation = "";
+		this.next_player_animation = "animate__animated animate__fadeInLeft";
 
 	},
 
 	show: function() {
+        this.animation = " ";
 		//change css class of Jägermeister bottle to move up one time
 		this.showed = true;
 		
 		this.showed_button = true;
+		this.next_player_animation = "";
+
+
+         this.show_animation = "animate__animated animate__slideOutUp";
+
+
+
 
 	},
 
 	roll_again: function() {
+	    this.animation = " ";
 		this.rolled_again = true;
 
 		var random1 = Math.random();
@@ -162,6 +199,11 @@ new Vue({
 		}
 
 		this.dices_rolled = true;
+
+        setTimeout(() => {
+             this.animation = "animation: shakeY; animation-duration: 1.7s;";
+             }, 100);
+
 	},
 
 	lie: function() {
@@ -183,6 +225,25 @@ new Vue({
 				this.finished = true;
 				console.log("aus")
 			}
+
+			this.show_animation = "animate__animated animate__slideInDown";
+			this.info = "-1 Leben für "  + this.players[this.last_player].name + "!";
+			this.info_animation = "animation: bounceInLeft; animation-duration: 1s;";
+
+            setTimeout(() => {
+             this.info_animation = ""
+             }, 3000);
+
+			setTimeout(() => {
+             this.info_animation = "animation: bounceOutRight; animation-duration: 1s;";
+
+             }, 3000);
+
+             setTimeout(() => {
+             this.info = "";
+
+             }, 4000);
+
 		},
 
 	truth: function() {
@@ -205,6 +266,23 @@ new Vue({
 				this.finished = true;
 				console.log("aus")
 			}
+		this.show_animation = "animate__animated animate__slideInDown";
+        this.info = "-1 Leben für "  + this.players[this.current_player].name + "!";
+        this.info_animation = "animation: bounceInLeft; animation-duration: 1s;";
+ setTimeout(() => {
+             this.info_animation = ""
+             }, 3000);
+
+        setTimeout(() => {
+             this.info_animation = "animation: bounceOutRight; animation-duration: 1s;";
+
+             }, 3000);
+
+              setTimeout(() => {
+             this.info = "";
+
+             }, 4000);
+
 
 	},
 

@@ -13,7 +13,8 @@
     <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.20/lodash.min.js"></script>
 
     <link href="css/bootstrap.css" rel="stylesheet" />
-	<link href="css/coming-sssoon.css" rel="stylesheet" />    
+	<link href="css/coming-sssoon.css" rel="stylesheet" />
+
     
     <!--     Fonts     -->
     <link href="http://netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.css" rel="stylesheet">
@@ -31,6 +32,11 @@
     <script src=
 "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js">
     </script>
+
+     <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+  />
 
 
                 <style>
@@ -94,9 +100,7 @@
   box-sizing: border-box;
 }
 
-html, body {
-  height: 100%;
-}
+
 
 
 
@@ -128,50 +132,42 @@ html, body {
   background-color: #333;
   box-shadow: inset 0 3px #111, inset 0 -3px #555;
 }
+
+
+
+
+
+
+body {
+
+
+  --c : rgba(255,255,255,0.4);
+  --t : transparent;
+}
+.col {
+  flex:1;
+}
+.pat-1 {
+	background-image:
+  repeating-linear-gradient(45deg, var(--c) 0, var(--c) 20px, var(--t) 20px, var(--t) 32px, var(--c) 32px, var(--c) 44px, var(--t) 44px, var(--t) 56px, var(--c) 56px, var(--c) 68px, var(--t) 68px, var(--t) 80px, var(--c) 0),
+  repeating-linear-gradient(-45deg, var(--c) 0, var(--c) 20px, var(--t) 20px, var(--t) 32px, var(--c) 32px, var(--c) 44px, var(--t) 44px, var(--t) 56px, var(--c) 56px, var(--c) 68px, var(--t) 68px, var(--t) 80px, var(--c) 0),
+  linear-gradient(to bottom right, #006600, #00cc00);
+}
+
+
+
+
+
+
+
                         </style>
 
   <!--     Personal CSS and JS (Maxi) end   -->
 </head>
 
 <body>
-<nav class="navbar navbar-transparent navbar-fixed-top" role="navigation">  
-  <div class="container">
-    <!-- Brand and toggle get grouped for better mobile display -->
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-    </div>
 
-    <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <ul class="nav navbar-nav">
-        <li>
-          <a href="#"> 
-              <i class="fa fa-flag"></i>
-              Neues Spiel
-          </a>
-      </li>
-
-      </ul>
-      <ul class="nav navbar-nav navbar-right">
-            <li>
-                <a href="#"> 
-                    <i class="fa fa-cogs"></i>
-                    Optionen
-                </a>
-            </li>
-
-            
-       </ul>
-      
-    </div><!-- /.navbar-collapse -->
-  </div><!-- /.container -->
-</nav>
-<div class="main" style="background-image: url('images/background.jpg')">
+<div class="main pat-1" >
 
 
 
@@ -183,9 +179,7 @@ html, body {
 <!--   You can change the black color for the filter with those colors: blue, green, red, orange       -->
 
     <div class="container">
-        <h1 class="logo cursive">
-            Loing
-        </h1>
+
 <!--  H1 can have 2 designs: "logo" and "logo cursive"           -->
 
 <div id="app">
@@ -195,13 +189,18 @@ html, body {
 
 
 
-  <div id="start-screen" v-show="!game_started">
+  <div id="start-screen"  v-show="!game_started">
 
-      <div class="content">
 
-            <h4 class="motto">Der österreichische Klassiker des Würfelspiels</h4>
 
-            <div class="subscribe">
+        <h1 class="logo cursive animate__animated animate__backInDown">
+            Loing
+        </h1>
+      <div class="content" >
+
+            <h4 class="motto animate__animated animate__backInDown">Der österreichische Klassiker des Würfelspiels</h4>
+
+            <div class="subscribe animate__animated animate__backInUp">
                 <h5 class="info-text">
                     Beginne ein Spiel
                 </h5>
@@ -238,7 +237,7 @@ html, body {
             <div class="col-md-4 col-md-offset-4 col-sm6-6 col-sm-offset-3" style="justify-content: center; text-align: center; padding-top:10px;">
 
                      <select class="selectpicker"
-                        data-style="btn-info" v-model="lives">
+                        data-style="btn-light" v-model="lives">
 
                             <option v-for="option in options" v-bind:value="option.value">
                               {{ option.text }} Leben
@@ -311,13 +310,115 @@ html, body {
 
 
   <div class="row content" style="justify-content: center; text-align: center; color:white">
-                    <div class="col-md-4 col-md-offset-4" style="justify-content: center; text-align: center; padding-top:10px;">
+                    <div class="col-md-4 col-md-offset-4" style="justify-content: center; text-align: center;">
 
+                        <div :class="next_player_animation">
+
+                            <hr>
+
+                <p  style="font-size: 120%; font-weight:bold;">{{players[current_player].name}} ist dran!</p>
                         <hr>
+                        </div>
 
-                <p style="font-size: 120%">{{players[current_player].name}} ist dran!</p>
-                        <hr>
 
+
+                             <p style="font-size: 130%; font-weight: bold;" v-if="info != '' " class="btn btn-danger btn-fill" :style="info_animation" >{{info}}
+                        </p>
+
+
+
+                    <div  style="padding-bottom: 40px;">
+                        <div class="row" style="padding-left: 24%;">
+                            <!--style="background-image: url('images/cup.png'); background-size: 760px 1024px;-->
+                        <!--background-repeat: no-repeat;"-->
+
+                            <img :class="show_animation"  :style="animation"  src="images/cup.png" alt="dice cup" width="350" height="auto"
+                                 style=" position: relative; left: -60px; top: -5px;  z-index: 1;">
+
+
+
+                        <div class="row" style="position: relative; top: -180px; left: 10px;">
+
+
+                                <div v-for="dice in dices" style="float:left;" class=".col-">
+                                <div v-if="dice === 1">
+                                      <span  class="first-face">
+                                      <span class="pip"></span>
+                                    </span>
+                                </div>
+
+                                    <div v-if="dice === 2" >
+                                        <span  class="second-face">
+                                      <span class="pip"></span>
+                                      <span class="pip"></span>
+                                    </span>
+                                    </div>
+
+
+
+                                 <div  v-if="dice === 3">
+                                        <span  class="third-face">
+                                      <span class="pip"></span>
+                                      <span class="pip"></span>
+                                      <span class="pip"></span>
+                                    </span>
+                                    </div>
+
+
+
+
+                                 <div v-if="dice === 4">
+                                <span  class="fourth-face">
+                                      <div class="column">
+                                        <span class="pip"></span>
+                                        <span class="pip"></span>
+                                      </div>
+                                      <div class="column">
+                                        <span class="pip"></span>
+                                        <span class="pip"></span>
+                                      </div>
+                                    </span>
+                                    </div>
+
+
+
+                                <div v-if="dice === 5" >
+                                <span  class="fifth-face">
+                                      <div class="column">
+                                        <span class="pip"></span>
+                                        <span class="pip"></span>
+                                      </div>
+                                      <div class="column">
+                                        <span class="pip"></span>
+                                      </div>
+                                      <div class="column">
+                                        <span class="pip"></span>
+                                        <span class="pip"></span>
+                                      </div>
+                                    </span>
+                                </div>
+
+
+
+                                <div v-if="dice === 6" >
+                                    <span  class="sixth-face">
+                                      <div class="column">
+                                        <span class="pip"></span>
+                                        <span class="pip"></span>
+                                        <span class="pip"></span>
+                                      </div>
+                                      <div class="column">
+                                        <span class="pip"></span>
+                                        <span class="pip"></span>
+                                        <span class="pip"></span>
+                                      </div>
+                                    </span>
+                                </div>
+
+
+                                </div>
+                            </div>
+                        </div>
 
 
                    <div v-if="!dices_rolled">
@@ -325,7 +426,7 @@ html, body {
 
                      <div v-if="!first">
 
-                      <div v-if="!showed_button">
+                      <div v-if="!showed_button" style="position:relative; top: -150px;">
 
 
                         <button style="margin-top: 10px;" class="btn btn-success btn-fill" v-on:click="roll">WÜRFELN</button>
@@ -336,196 +437,30 @@ html, body {
 
 
 
-                       <div v-if="showed">
-
-
-                        <div style="margin-left: 15%;">
-
-                        <span v-for="dice in dices" style="float:left">
-                        <div v-if="dice === 1">
-                              <span  class="first-face">
-                              <span class="pip"></span>
-                            </span>
-                        </div>
-
-                            <div v-if="dice === 2" >
-                                <span  class="second-face">
-                              <span class="pip"></span>
-                              <span class="pip"></span>
-                            </span>
-                            </div>
+                       <div v-if="showed" style="position:relative; top: -150px;">
 
 
 
-                         <div  v-if="dice === 3">
-                                <span  class="third-face">
-                              <span class="pip"></span>
-                              <span class="pip"></span>
-                              <span class="pip"></span>
-                            </span>
-                            </div>
-
-
-
-
-                         <div v-if="dice === 4">
-                        <span  class="fourth-face">
-                              <div class="column">
-                                <span class="pip"></span>
-                                <span class="pip"></span>
-                              </div>
-                              <div class="column">
-                                <span class="pip"></span>
-                                <span class="pip"></span>
-                              </div>
-                            </span>
-                            </div>
-
-
-
-                        <div v-if="dice === 5" >
-                        <span  class="fifth-face">
-                              <div class="column">
-                                <span class="pip"></span>
-                                <span class="pip"></span>
-                              </div>
-                              <div class="column">
-                                <span class="pip"></span>
-                              </div>
-                              <div class="column">
-                                <span class="pip"></span>
-                                <span class="pip"></span>
-                              </div>
-                            </span>
-                        </div>
-
-
-
-                        <div v-if="dice === 6" >
-                            <span  class="sixth-face">
-                              <div class="column">
-                                <span class="pip"></span>
-                                <span class="pip"></span>
-                                <span class="pip"></span>
-                              </div>
-                              <div class="column">
-                                <span class="pip"></span>
-                                <span class="pip"></span>
-                                <span class="pip"></span>
-                              </div>
-                            </span>
-                        </div>
-
-
-                        </span>
-
-                    </div>
-
-
-                        <div class="col-sm-12">
+                        <div class="row">
                             <button style="margin-top: 10px;" class="btn btn-danger btn-fill" v-on:click="lie" >Gelogen</button>
-                         <button style="margin-top: 10px;" class="btn btn-success btn-fill" v-on:click="truth" >Wahrheit</button>
+                            <button style="margin-top: 10px;" class="btn btn-success btn-fill" v-on:click="truth" >Wahrheit</button>
+
                         </div>
+
+
 
                        </div>
 
                      </div>
                      <div v-else>
-                       <button style="margin-top: 10px;" class="btn btn-success btn-fill" v-on:click="roll">WÜRFELN</button>
+                         <button v-if="animation != '' " style="position: relative; top: -140px"  class="btn btn-success btn-fill" v-on:click="roll">WÜRFELN</button>
+                       <button v-if="animation == '' "   class="btn btn-success btn-fill" v-on:click="roll">WÜRFELN</button>
                      </div>
                    </div>
 
 
 
-                   <div v-if="dices_rolled">
-
-
-
-
-
-
-
-                    <div style="margin-left: 15%;">
-
-                        <span v-for="dice in dices" style="float:left">
-                        <div v-if="dice === 1">
-                              <span  class="first-face">
-                              <span class="pip"></span>
-                            </span>
-                        </div>
-
-                            <div v-if="dice === 2" >
-                                <span  class="second-face">
-                              <span class="pip"></span>
-                              <span class="pip"></span>
-                            </span>
-                            </div>
-
-
-
-                         <div  v-if="dice === 3">
-                                <span  class="third-face">
-                              <span class="pip"></span>
-                              <span class="pip"></span>
-                              <span class="pip"></span>
-                            </span>
-                            </div>
-
-
-
-
-                         <div v-if="dice === 4">
-                        <span  class="fourth-face">
-                              <div class="column">
-                                <span class="pip"></span>
-                                <span class="pip"></span>
-                              </div>
-                              <div class="column">
-                                <span class="pip"></span>
-                                <span class="pip"></span>
-                              </div>
-                            </span>
-                            </div>
-
-
-
-                        <div v-if="dice === 5" >
-                        <span  class="fifth-face">
-                              <div class="column">
-                                <span class="pip"></span>
-                                <span class="pip"></span>
-                              </div>
-                              <div class="column">
-                                <span class="pip"></span>
-                              </div>
-                              <div class="column">
-                                <span class="pip"></span>
-                                <span class="pip"></span>
-                              </div>
-                            </span>
-                        </div>
-
-
-
-                        <div v-if="dice === 6" >
-                            <span  class="sixth-face">
-                              <div class="column">
-                                <span class="pip"></span>
-                                <span class="pip"></span>
-                                <span class="pip"></span>
-                              </div>
-                              <div class="column">
-                                <span class="pip"></span>
-                                <span class="pip"></span>
-                                <span class="pip"></span>
-                              </div>
-                            </span>
-                        </div>
-
-
-                        </span>
-
-                    </div>
+                             <div v-if="dices_rolled">
 
 
 
@@ -541,8 +476,16 @@ html, body {
 
 
 
-                        <div v-if="!rolled_again">
-                          <button style="margin-top: 10px;" class="btn btn-info btn-fill" v-on:click="open_close" >Reinschauen/Schließen</button>
+
+
+
+
+
+
+
+
+                        <div v-if="!rolled_again" style="position:relative; top: -150px;">
+                          <button style="margin-top: 10px;" class="btn btn-info btn-fill" v-on:click="open_close" >Reinschauen</button>
 
                             <div v-if="!first">
                            <button style="margin-top: 10px;" class="btn btn-warning btn-fill" v-on:click="roll_again">Nochmal würfeln & Einstellen</button>
@@ -552,7 +495,7 @@ html, body {
                         </div>
 
 
-                 <button style="margin-top: 10px;" class="btn btn-primary btn-fill" v-on:click="next_player" >Weiter geben</button>
+                 <button style="margin-top: 10px; position:relative; top: -150px;" class="btn btn-primary btn-fill" v-on:click="next_player" >Weiter geben</button>
 
 
 
@@ -567,15 +510,21 @@ html, body {
 
 
 
+
+            <div v-if="animation != '' " style="position:relative; top: -140px;">
+
+
                     <div v-if="schwimmen">
 
-                      <p v-for="(player, index) in sortArrays(players)">
+                      <p class="form-control transparent" v-for="(player, index) in sortArrays(players)" >
+                          <!--<span>{{index + 1}}.</span>-->
+                      <span >{{ player.name }}:</span>
+                      <span v-if="player.lives === 1"> schwimmt</span>
+                      <span v-if="player.lives < 1"> ausgeschieden</span>
+                      <span v-if="player.lives > 1"> noch {{player.lives - 1}} Leben</span>
 
-                      <span>{{index + 1}}.</span>
-                      <span>{{ player.name }}</span>
-                      <span v-if="player.lives === 1">schwimmt</span>
-                      <span v-if="player.lives < 1">-</span>
-                      <span v-if="player.lives > 1">{{player.lives - 1}} Leben</span>
+
+
 
                       </p>
 
@@ -584,18 +533,65 @@ html, body {
 
                     </div>
 
+
+
                   <div v-else>
 
-                    <p v-for="(player, index) in sortArrays(players)" >
-                          <span>{{index + 1}}.</span>
-                          <span>{{ player.name }}</span>
-                          <span v-if="player.lives >= 1">{{ player.lives }} Leben</span>
-                          <span v-if="player.lives < 1">-</span>
+                    <p class="form-control transparent" v-for="(player, index) in sortArrays(players)" >
+
+                      <!--<span>{{index + 1}}.</span>-->
+                          <span>{{ player.name }}:</span>
+                          <span v-if="player.lives >= 1"> noch {{ player.lives }} Leben</span>
+                          <span v-if="player.lives < 1"> ausgeschieden</span>
+
+
                         </p>
 
                   </div>
 
+            </div>
 
+
+
+        <div v-if="animation == '' " style="padding-top: 10px;">
+
+
+                    <div v-if="schwimmen">
+
+                      <p class="form-control transparent" v-for="(player, index) in sortArrays(players)" >
+                          <!--<span>{{index + 1}}.</span>-->
+                      <span >{{ player.name }}:</span>
+                      <span v-if="player.lives === 1"> schwimmt</span>
+                      <span v-if="player.lives < 1"> ausgeschieden</span>
+                      <span v-if="player.lives > 1"> noch {{player.lives - 1}} Leben</span>
+
+
+
+
+                      </p>
+
+
+
+
+                    </div>
+
+
+
+                  <div v-else>
+
+                    <p class="form-control transparent" v-for="(player, index) in sortArrays(players)" >
+
+                      <!--<span>{{index + 1}}.</span>-->
+                          <span>{{ player.name }}:</span>
+                          <span v-if="player.lives >= 1"> noch {{ player.lives }} Leben</span>
+                          <span v-if="player.lives < 1"> ausgeschieden</span>
+
+
+                        </p>
+
+                  </div>
+
+        </div>
 
 
 
